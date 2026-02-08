@@ -17,20 +17,22 @@ Easily mount and unmount `.img` files with just a few clicks — no commands nee
 
 ## 📦 Installation
 
-Run the following commands in your terminal:
+  Run the following commands in your terminal:
 
-```bash
-# Download the script
+  #### 1. Download
+  ```bash
 wget https://raw.githubusercontent.com/vihatsoft/img-mounter/main/imgmount -O imgmount
-
-# Make it executable
+  ```
+  #### 2. Make it executable
+  ```bash
 chmod +x imgmount
-
-# Install system-wide (requires sudo)
+```
+  #### 3. Install system-wide (requires sudo)
+  ```bash
 sudo ./imgmount install
 ```
 
-After installation:
+  After installation:
 - Run command : `sudo imgmount`
 
 ---
