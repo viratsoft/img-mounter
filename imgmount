@@ -111,7 +111,7 @@ gui_mode(){
 
         [[ ! -f "$IMG" ]] && { zenity --error --no-markup --text="File not found:\n$IMG"; continue; }
 
-        MODES=("Read Only" "Read & Write")
+        MODES=("Read & Write" "Read Only")
         MODE=$(zenity --list --no-markup --title="Mount Mode" --column="Mode" \
           "${MODES[@]}" --width=400 --height=$(dyn_height ${#MODES[@]})) || continue
         [[ "$MODE" == "Read Only" ]] && MODE="ro" || MODE="rw"
@@ -218,7 +218,7 @@ tui_mode(){
 
         [[ ! -f "$IMG" ]] && { whiptail --msgbox "File not found." 8 50; continue; }
 
-        MODE=$(whiptail --menu "Select mode:" 10 50 2 ro "Read Only" rw "Read & Write" 3>&1 1>&2 2>&3) || continue
+        MODE=$(whiptail --menu "Select mode:" 10 50 2 rw "Read & Write" ro "Read Only" 3>&1 1>&2 2>&3) || continue
         TIME=$(date '+%Y-%m-%d_%I-%M-%S%p')
         BASE=$(basename "$IMG" .img)
         FOLDER=$(whiptail --inputbox "Folder under $IMG_MOUNT_DIR:" 10 70 "${TIME}_${BASE}" 3>&1 1>&2 2>&3) || continue
