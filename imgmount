@@ -72,10 +72,23 @@ perform_mount(){
 # Perform Unmount
 perform_unmount(){
   local LOOP="$1" BASE="$2"
-  while read -r m; do [[ -n "$m" ]] && sudo umount "$m" 2>>"$LOG_FILE" && sudo rmdir "$m" 2>/dev/null; done \
-    < <(mount | awk -v b="$BASE" '$3~("^"b"/"){print $3}')
-  sudo "$LOS" -d "$LOOP" 2>/dev/null; sudo losetup -D 2>/dev/null
+
+  sync
+
+  while read -r m; do
+    [[ -n "$m" ]] && sudo umount "$m" 2>/dev/null && sudo rmdir "$m" 2>/dev/null
+  done < <(mount | awk -v b="$BASE" '$3~("^"b"/"){print $3}')
+
+  sync
+  sudo blockdev --flushbufs "$LOOP" 2>/dev/null
+  sync
+
+  sudo losetup -d "$LOOP" 2>/dev/null
+
+  # keep this
   sudo find "$IMG_MOUNT_DIR" -type d -empty -delete 2>/dev/null
+
+  sync
 }
 
 # ---------- GUI ----------
