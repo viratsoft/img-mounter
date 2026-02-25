@@ -64,7 +64,11 @@ perform_mount(){
   local ok=false
   for P in "${PARTS[@]}"; do pn="${P##*p}"; [[ "$P" == "$LOOP" ]] && pn="0"
     MP="$BASE/p$pn"; sudo mkdir -p "$MP"
-    if sudo mount $OPT "$P" "$MP" 2>>"$LOG_FILE"; then ok=true; else sudo rmdir "$MP"; fi
+    if [[ "$MODE" == "ro" ]]; then
+      if sudo mount -o ro,sync,noatime "$P" "$MP" 2>>"$LOG_FILE"; then ok=true; else sudo rmdir "$MP"; fi
+    else
+      if sudo mount -o rw,sync,noatime "$P" "$MP" 2>>"$LOG_FILE"; then ok=true; else sudo rmdir "$MP"; fi
+    fi
   done
   $ok && echo "$BASE" || return 1
 }
@@ -90,6 +94,8 @@ perform_unmount(){
 
   sync
 }
+
+
 
 # ---------- GUI ----------
 gui_mode(){
